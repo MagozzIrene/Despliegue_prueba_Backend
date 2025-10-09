@@ -122,7 +122,6 @@ class ContactRepository {
         }).populate("requester_id", "name email avatar_url status");
     }
 
-    // 🔧 NUEVO: Contactos aceptados
     static async getAcceptedContacts(user_id) {
         return await this.getContactsByUser(user_id, "aceptado");
     }
