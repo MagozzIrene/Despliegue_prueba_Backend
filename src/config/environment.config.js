@@ -10,4 +10,6 @@ const ENVIRONMENT = {
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
 }
 
+//prueba
+
 export default ENVIRONMENT
