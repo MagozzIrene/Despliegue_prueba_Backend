@@ -123,7 +123,7 @@ class AuthController {
                     <style>
                         body {
                             font-family: Arial, sans-serif;
-                            background: linear-gradient(135deg, #00BFA6, #1E88E5);
+                            background: #00BFA6;
                             color: white;
                             text-align: center;
                             padding: 50px;
@@ -156,7 +156,7 @@ class AuthController {
                 </head>
                 <body>
                     <div class="card">
-                        <h1>🎉 ¡Tu cuenta fue verificada con éxito!</h1>
+                        <h1>¡Tu cuenta fue verificada con éxito!</h1>
                         <p>Ya podés iniciar sesión en tu cuenta.</p>
                         <a href="${ENVIRONMENT.FRONTEND_URL || '#'}">Ir al login</a>
                     </div>
