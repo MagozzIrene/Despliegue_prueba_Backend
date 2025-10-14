@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import ENVIRONMENT from "../config/environment.config.js";
 
 class AuthService {
-    static async register(username, password, email) {
+    static async register(name, password, email) {
         //Verificar que el usuario no este repido
         //  - .getByEmail en UserRepository
 
@@ -20,7 +20,7 @@ class AuthService {
 
         //guardarlo en la DB
         const user_created = await UserRepository.createUser(
-            username,
+            name,
             email,
             password_hashed
         );
@@ -111,8 +111,16 @@ class AuthService {
             }
         );
 
+        /* return {
+            authorization_token,
+        }; */
         return {
             authorization_token,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+            },
         };
     }
 }

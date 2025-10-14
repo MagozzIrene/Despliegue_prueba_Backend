@@ -157,7 +157,7 @@ class AuthController {
                 <body>
                     <div class="card">
                         <h1>¡Tu cuenta fue verificada con éxito!</h1>
-                        <p>Ya podés iniciar sesión en tu cuenta.</p>
+                        <p>Ya podés iniciar sesión.</p>
                         <a href="${ENVIRONMENT.FRONTEND_URL || '#'}">Ir al login</a>
                     </div>
                 </body>
