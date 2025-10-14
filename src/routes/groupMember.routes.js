@@ -9,4 +9,4 @@ router.get("/:group_id", GroupMemberController.getMembers);
 router.get("/user/:user_id", GroupMemberController.getGroupsByUser);
 router.put("/sync", GroupMemberController.syncMembers);
 
-export default router;
+export default router

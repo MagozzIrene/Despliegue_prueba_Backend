@@ -5,9 +5,11 @@ class GroupMemberController {
         try {
             const { group_id, user_id } = req.body;
             const member = await GroupMemberRepository.addMember(group_id, user_id);
-            res
-                .status(201)
-                .json({ ok: true, message: "Miembro agregado", data: member });
+            res.status(201).json({
+                ok: true,
+                message: "Miembro agregado correctamente ✅",
+                data: member
+            });
         } catch (error) {
             res
                 .status(error.statusCode || 500)
@@ -19,7 +21,7 @@ class GroupMemberController {
         try {
             const { group_id, user_id } = req.body;
             await GroupMemberRepository.removeMember(group_id, user_id);
-            res.json({ ok: true, message: "Miembro eliminado" });
+            res.json({ ok: true, message: "Miembro eliminado del grupo 🚫" });
         } catch (error) {
             res
                 .status(error.statusCode || 500)
@@ -50,11 +52,12 @@ class GroupMemberController {
     static async syncMembers(req, res) {
         try {
             const { group_id, members } = req.body;
-            const updatedMembers = await GroupMemberRepository.syncMembers(
-                group_id,
-                members
-            );
-            res.json({ ok: true, data: updatedMembers });
+            const updatedMembers = await GroupMemberRepository.syncMembers(group_id, members);
+            res.json({
+                ok: true,
+                message: "Miembros sincronizados correctamente 🔄",
+                data: updatedMembers
+            });
         } catch (error) {
             res
                 .status(error.statusCode || 500)

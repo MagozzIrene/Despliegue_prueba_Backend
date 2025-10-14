@@ -1,43 +1,57 @@
-import ENVIRONMENT from "./config/environment.config.js";
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 import connectMongoDB from "./config/mongoDB.config.js";
 
-
-connectMongoDB()
-
-import express from 'express'
 import auth_router from "./routes/auth.router.js";
-import cors from 'cors'
-import authMiddleware from "./middleware/auth.middleware.js";
 import contactRoutes from "./routes/contact.routes.js";
 import groupRoutes from "./routes/group.routes.js";
 import groupMemberRoutes from "./routes/groupMember.routes.js";
 import messageRoutes from "./routes/message.routes.js";
+import authMiddleware from "./middleware/auth.middleware.js";
 
-const app = express()
+dotenv.config();
 
-app.use(cors())
-app.use(express.json())
+const app = express();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://despliegue-prueba-frontend.vercel.app"
+];
 
-app.use('/api/auth', auth_router)
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("CORS no permitido para este origen: " + origin));
+            }
+        },
+        credentials: true,
+    })
+);
+
+app.use(express.json());
+
+connectMongoDB();
+
+app.use("/api/auth", auth_router);
 app.use("/api/contacts", contactRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/group-members", groupMemberRoutes);
 app.use("/api/messages", messageRoutes);
 
+app.get("/ruta-protegida", authMiddleware, (req, res) => {
+    console.log(req.user);
+    res.json({ ok: true, user: req.user });
+});
 
-app.get('/ruta-protegida', authMiddleware, (request, response) => {
-    console.log(request.user)
-    response.send({
-        ok: true
-    })
-})
+export default app;
 
-
-
-app.listen(
-    8080, 
-    () => {
-        console.log("Esto esta funcionado")
-    }
-)
+if (process.env.NODE_ENV !== "production") {
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => {
+        console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    });
+}
