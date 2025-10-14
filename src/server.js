@@ -9,6 +9,7 @@ import groupRoutes from "./routes/group.routes.js";
 import groupMemberRoutes from "./routes/groupMember.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import authMiddleware from "./middleware/auth.middleware.js";
+import groupMessageRoutes from "./routes/groupMessage.routes.js";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use("/api/contacts", contactRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/group-members", groupMemberRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/group-messages", groupMessageRoutes);
 
 app.get("/ruta-protegida", authMiddleware, (req, res) => {
     console.log(req.user);
