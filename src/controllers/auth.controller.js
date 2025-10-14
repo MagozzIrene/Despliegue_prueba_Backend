@@ -1,3 +1,4 @@
+import ENVIRONMENT from "../config/environment.config.js"
 import AuthService from "../services/auth.service.js"
 import { ServerError } from "../utils/customError.utils.js"
 
@@ -108,11 +109,60 @@ class AuthController {
             const {verification_token} = request.params
             await AuthService.verifyEmail(verification_token)
 
-            return response.json({
+            /* return response.json({
                 ok: true, 
                 status: 200,
                 message: 'Usuario validado'
-            })
+            }) */
+
+            return response.status(200).send(`
+            <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Cuenta verificada</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background: linear-gradient(135deg, #00BFA6, #1E88E5);
+                            color: white;
+                            text-align: center;
+                            padding: 50px;
+                        }
+                        .card {
+                            background: white;
+                            color: #333;
+                            border-radius: 16px;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                            display: inline-block;
+                            padding: 40px 60px;
+                        }
+                        h1 {
+                            color: #00BFA6;
+                        }
+                        a {
+                            display: inline-block;
+                            margin-top: 20px;
+                            padding: 10px 20px;
+                            background: #00BFA6;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 8px;
+                            font-weight: bold;
+                        }
+                        a:hover {
+                            background: #009e8c;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="card">
+                        <h1>🎉 ¡Tu cuenta fue verificada con éxito!</h1>
+                        <p>Ya podés iniciar sesión en tu cuenta.</p>
+                        <a href="${ENVIRONMENT.FRONTEND_URL || '#'}">Ir al login</a>
+                    </div>
+                </body>
+            </html>
+        `)    
         } 
         catch (error) {
             console.log(error)

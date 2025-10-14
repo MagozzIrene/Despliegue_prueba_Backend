@@ -10,7 +10,8 @@ const ENVIRONMENT = {
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     GMAIL_USER: process.env.GMAIL_USER,
     GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
-    BACKEND_URL: process.env.BACKEND_URL
+    BACKEND_URL: process.env.BACKEND_URL,
+    FRONTEND_URL: process.env.FRONTEND_URL
 };
 
 //prueba
