@@ -17,6 +17,7 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
+    "http://localhost:8080",
     "https://despliegue-prueba-frontend.vercel.app"
 ];
 
@@ -34,6 +35,11 @@ app.use(
 );
 
 app.use(express.json());
+
+//Prueba
+
+app.use(express.urlencoded({ extended: true }));
+
 
 connectMongoDB();
 
