@@ -18,7 +18,8 @@ const app = express();
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:8080",
-    "https://despliegue-prueba-frontend.vercel.app"
+    "https://despliegue-prueba-frontend.vercel.app",
+    "https://despliegue-prueba-backend.vercel.app"
 ];
 
 app.use(
