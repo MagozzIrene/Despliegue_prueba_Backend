@@ -288,70 +288,19 @@ class AuthController {
             }
 
             await AuthService.resetPassword(token, new_password);
-            
-            /* return res.send("¡Contraseña actualizada! Ya podés iniciar sesión.");
+
+            /* return res.send("¡Contraseña actualizada! Ya podés iniciar sesión."); */
+
+            return res.redirect(`${ENVIRONMENT.FRONTEND_URL}/login`);
+
         } catch (error) {
             console.error("Error completo en resetPassword controller:", error);
             console.error("Stack trace:", error.stack);
             console.error("Body recibido:", req.body);
             console.error("Token recibido:", req.params.token);
             return res.status(500).send("Error al actualizar contraseña.");
-        } */
-
-            return res.send(`
-        <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Contraseña actualizada</title>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        background: #00BFA6;
-                        color: white;
-                        text-align: center;
-                        padding: 50px;
-                    }
-                    .card {
-                        background: white;
-                        color: #333;
-                        border-radius: 16px;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                        display: inline-block;
-                        padding: 40px 60px;
-                    }
-                    h1 {
-                        color: #00BFA6;
-                    }
-                    a {
-                        display: inline-block;
-                        margin-top: 20px;
-                        padding: 10px 20px;
-                        background: #00BFA6;
-                        color: white;
-                        text-decoration: none;
-                        border-radius: 8px;
-                        font-weight: bold;
-                    }
-                    a:hover {
-                        background: #009e8c;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="card">
-                    <h1>¡Contraseña actualizada!</h1>
-                    <p>Ya podés iniciar sesión con tu nueva contraseña.</p>
-                    <a href="${ENVIRONMENT.FRONTEND_URL}/login">Ir al login</a>
-                </div>
-            </body>
-        </html>
-        `);
-    } catch (error) {
-        console.error("Error completo en resetPassword controller:", error);
-        return res.status(500).send("Error al actualizar contraseña.");
+        }
     }
-    }
-
 
 
 }
