@@ -10,30 +10,30 @@ class AuthController {
             Validar los 3 campos
             */
             const {
-                username, 
-                email, 
+                name,
+                email,
                 password
             } = request.body
             console.log(request.body)
-            if(!username){
+            if (!name) {
                 throw new ServerError(
-                    400, 
+                    400,
                     'Debes enviar un nombre de usuario valido'
                 )
             }
-            else if(!email || !String(email).toLowerCase().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){
+            else if (!email || !String(email).toLowerCase().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
                 throw new ServerError(
-                    400, 
+                    400,
                     'Debes enviar un email valido'
                 )
             }
-            else if(!password || password.length < 8){
+            else if (!password || password.length < 8) {
                 throw new ServerError(
-                    400, 
+                    400,
                     'Debes enviar una contraseña valida'
                 )
             }
-            await AuthService.register(username, password, email)
+            await AuthService.register(name, password, email)
 
             response.json({
                 ok: true,
@@ -65,19 +65,20 @@ class AuthController {
 
     }
     static async login(request, response) {
-        try{
-            const {email, password} = request.body
+        try {
+            const { email, password } = request.body
 
             /* 
             - Validar que el email y password sean validas
             */
-            const { authorization_token } = await AuthService.login(email, password)
+            const { authorization_token, user } = await AuthService.login(email, password)
             return response.json({
                 ok: true,
                 message: 'Logueado con exito',
                 status: 200,
                 data: {
-                    authorization_token: authorization_token
+                    authorization_token: authorization_token,
+                    user: user
                 }
             })
         }
@@ -105,8 +106,8 @@ class AuthController {
     }
 
     static async verifyEmail(request, response) {
-        try{
-            const {verification_token} = request.params
+        try {
+            const { verification_token } = request.params
             await AuthService.verifyEmail(verification_token)
 
             /* return response.json({
@@ -162,8 +163,8 @@ class AuthController {
                     </div>
                 </body>
             </html>
-        `)    
-        } 
+        `)
+        }
         catch (error) {
             console.log(error)
             if (error.status) {

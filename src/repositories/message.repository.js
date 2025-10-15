@@ -17,8 +17,8 @@ class MessageRepository {
             ],
         })
             .sort({ sent_at: 1 })
-            .populate("sender", "username email")
-            .populate("receiver", "username email");
+            .populate("sender", "name email")
+            .populate("receiver", "name email");
     }
 
     //Prueba
