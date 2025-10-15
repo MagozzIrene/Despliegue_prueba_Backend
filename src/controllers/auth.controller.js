@@ -203,76 +203,81 @@ class AuthController {
     }
 
     static async showResetForm(req, res) {
-        const { token } = req.params;
-        return res.send(`
-    <html>
-        <head>
-        <meta charset="UTF-8">
-        <title>Restablecer contraseña</title>
-        <style>
-            body {
-            font-family: Arial, sans-serif;
-            background: #00BFA6;
-            color: white;
-            text-align: center;
-            padding: 50px;
-            }
-            .card {
-            background: white;
-            color: #333;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: inline-block;
-            padding: 40px 60px;
-            }
-            h1 {
-            color: #00BFA6;
-            }
-            input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            }
-            button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #00BFA6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            }
-            button:hover {
-            background: #009e8c;
-            }
-            a {
-            display: inline-block;
-            margin-top: 20px;
-            color: #00BFA6;
-            text-decoration: none;
-            }
-        </style>
-        </head>
-        <body>
-        <div class="card">
-            <h1>Restablecer contraseña</h1>
-            <form method="POST" action="/api/auth/reset-password/${token}">
-            <input type="password" name="new_password" placeholder="Nueva contraseña" required />
-            <br/>
-            <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required />
-            <br/>
-            <button type="submit">Actualizar contraseña</button>
-            </form>
-            <a href="${ENVIRONMENT.FRONTEND_URL || '#'}">Volver al login</a>
-        </div>
-        </body>
-    </html>
-    `);
-    }
+  const { token } = req.params;
+  return res.send(`
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Restablecer contraseña</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #00BFA6;
+          color: white;
+          text-align: center;
+          padding: 50px;
+        }
+        .card {
+          background: white;
+          color: #333;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          display: inline-block;
+          padding: 40px 60px;
+        }
+        input {
+          width: 80%;
+          padding: 10px;
+          margin: 10px 0;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        }
+        button {
+          background: #00BFA6;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-weight: bold;
+          cursor: pointer;
+          padding: 10px 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <h1>Restablecer contraseña</h1>
+        <form id="resetForm">
+          <input type="password" name="new_password" placeholder="Nueva contraseña" required />
+          <br />
+          <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required />
+          <br />
+          <button type="submit">Actualizar contraseña</button>
+        </form>
+        <p id="message" style="color:red;font-weight:bold;"></p>
+      </div>
+      <script>
+        document.getElementById('resetForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const new_password = e.target.new_password.value;
+          const confirm_password = e.target.confirm_password.value;
+          
+          try {
+            const res = await fetch('/api/auth/reset-password/${token}', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ new_password, confirm_password })
+            });
+            const text = await res.text();
+            document.getElementById('message').textContent = text;
+          } catch (err) {
+            document.getElementById('message').textContent = 'Error al conectar con el servidor.';
+          }
+        });
+      </script>
+    </body>
+  </html>
+  `);
+}
 
     static async resetPassword(req, res) {
         try {
