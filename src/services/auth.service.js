@@ -76,22 +76,22 @@ class AuthService {
 
 
     static async sendPasswordRecovery(email) {
-    // usamos UserRepository en lugar de User directamente
-    const user = await UserRepository.getByEmail(email);
-    if (!user) return; // No revelamos si existe o no
+        // usamos UserRepository en lugar de User directamente
+        const user = await UserRepository.getByEmail(email);
+        if (!user) return; // No revelamos si existe o no
 
-    // Creamos el token que expira en 15 minutos
-    const token = jwt.sign(
-        { id: user._id },
-        ENVIRONMENT.JWT_SECRET_KEY,
-        { expiresIn: "15m" }
-    );
+        // Creamos el token que expira en 15 minutos
+        const token = jwt.sign(
+            { id: user._id },
+            ENVIRONMENT.JWT_SECRET_KEY,
+            { expiresIn: "15m" }
+        );
 
-    // Link para resetear la contraseña
-    const resetLink = `${ENVIRONMENT.BACKEND_URL}/api/auth/reset-password/${token}`;
+        // Link para resetear la contraseña
+        const resetLink = `${ENVIRONMENT.BACKEND_URL}/api/auth/reset-password/${token}`;
 
-    // Contenido del mail
-    const html = `
+        // Contenido del mail
+        const html = `
         <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
             <div style="max-width: 500px; background: white; margin: auto; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 <h2 style="color: #128C7E;">Recuperación de contraseña 🔑</h2>
@@ -109,14 +109,14 @@ class AuthService {
         </div>
     `;
 
-    // Enviar el correo
-    await transporter.sendMail({
-        from: ENVIRONMENT.GMAIL_USER,
-        to: user.email,
-        subject: "Recuperación de contraseña",
-        html,
-    });
-}
+        // Enviar el correo
+        await transporter.sendMail({
+            from: ENVIRONMENT.GMAIL_USER,
+            to: user.email,
+            subject: "Recuperación de contraseña",
+            html,
+        });
+    }
 
 
     static async login(email, password) {
@@ -170,7 +170,7 @@ class AuthService {
     }
 
 
-    static async resetPassword(token, new_password) {
+    /* static async resetPassword(token, new_password) {
     try {
         console.log("Token recibido:", token);
 
@@ -192,8 +192,38 @@ class AuthService {
         console.error("Error en resetPassword:", error);
         throw new ServerError(500, "Error al actualizar contraseña");
     }
-}
+} */
 
+    static async resetPassword(token, new_password) {
+        try {
+            console.log("resetPassword iniciado");
+            console.log("Token recibido:", token);
+            console.log("Nueva contraseña recibida:", new_password);
+
+            const decoded = jwt.verify(token, ENVIRONMENT.JWT_SECRET_KEY);
+            console.log("Token decodificado:", decoded);
+
+            const user_id = decoded.id;
+            console.log("ID del usuario:", user_id);
+
+            const hashedPassword = await bcrypt.hash(new_password, 12);
+            console.log("Contraseña encriptada:", hashedPassword ? "ok" : "fail");
+
+            const userUpdated = await UserRepository.updateById(user_id, { password: hashedPassword });
+            console.log("Resultado de update:", userUpdated);
+
+            if (!userUpdated) {
+                throw new ServerError(404, "Usuario no encontrado");
+            }
+
+            console.log("Contraseña actualizada correctamente");
+            return true;
+
+        } catch (error) {
+            console.error("ERROR en resetPassword (producción):", error);
+            throw new ServerError(500, "Error al actualizar contraseña");
+        }
+    }
 
 }
 
