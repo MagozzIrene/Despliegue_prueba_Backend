@@ -172,27 +172,24 @@ class AuthService {
 
     static async resetPassword(token, new_password) {
     try {
-        console.log("🟢 Token recibido:", token);
+        console.log("Token recibido:", token);
 
-        // Verificamos el token y obtenemos el ID del usuario
         const decoded = jwt.verify(token, ENVIRONMENT.JWT_SECRET_KEY);
         const user_id = decoded.id;
-        console.log("🟢 ID del usuario:", user_id);
+        console.log("ID del usuario:", user_id);
 
-        // Hasheamos la nueva contraseña
         const hashedPassword = await bcrypt.hash(new_password, 12);
 
-        // Actualizamos la contraseña en la base de datos
         const userUpdated = await UserRepository.updateById(user_id, { password: hashedPassword });
 
         if (!userUpdated) {
             throw new ServerError(404, "Usuario no encontrado");
         }
 
-        console.log("✅ Contraseña actualizada correctamente");
+        console.log("Contraseña actualizada correctamente");
         return true;
     } catch (error) {
-        console.error("❌ Error en resetPassword:", error);
+        console.error("Error en resetPassword:", error);
         throw new ServerError(500, "Error al actualizar contraseña");
     }
 }

@@ -285,8 +285,10 @@ class AuthController {
             await AuthService.resetPassword(token, new_password);
             return res.send("¡Contraseña actualizada! Ya podés iniciar sesión.");
         } catch (error) {
-            console.error("❌ Error completo en resetPassword controller:", error);
+            console.error("Error completo en resetPassword controller:", error);
             console.error("Stack trace:", error.stack);
+            console.error("Body recibido:", req.body);
+            console.error("Token recibido:", req.params.token);
             return res.status(500).send("Error al actualizar contraseña.");
         }
     }
