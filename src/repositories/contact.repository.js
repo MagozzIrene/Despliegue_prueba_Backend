@@ -90,8 +90,8 @@ class ContactRepository {
         }
 
         return await Contacts.find(query)
-            .populate("requester_id", "name email avatar_url status")
-            .populate("receiver_id", "name email avatar_url status");
+            .populate("requester_id", "name email avatar status")
+            .populate("receiver_id", "name email avatar status");
     }
 
     static async updateStatus(contact_id, new_status) {
@@ -104,8 +104,8 @@ class ContactRepository {
             contact_id,
             { status: new_status },
             { new: true }
-        ).populate("requester_id", "name email avatar_url status")
-            .populate("receiver_id", "name email avatar_url status");
+        ).populate("requester_id", "name email avatar status")
+            .populate("receiver_id", "name email avatar status");
 
         return updated;
     }
@@ -119,7 +119,7 @@ class ContactRepository {
         return await Contacts.find({
             receiver_id: user_id,
             status: "pendiente",
-        }).populate("requester_id", "name email avatar_url status");
+        }).populate("requester_id", "name email avatar status");
     }
 
     static async getAcceptedContacts(user_id) {
