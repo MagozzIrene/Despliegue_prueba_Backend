@@ -152,6 +152,9 @@ class AuthService {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+
+                avatar: user.avatar,  // Prueba
+                
                 created_at: user.created_at,
             },
             ENVIRONMENT.JWT_SECRET_KEY,
