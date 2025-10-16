@@ -12,10 +12,11 @@ class UserRepository {
             return result
         } */
 
-    static async createUser(name, email, password) {
+    static async createUser(name, email, avatar = "", password) {
         const user = await Users.create({
             name,
             email,
+            avatar,
             password,
         })
         return user // trae _id y respeta defaults del schema

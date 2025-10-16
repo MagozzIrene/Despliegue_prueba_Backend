@@ -15,6 +15,9 @@ class AuthService {
             throw new ServerError(400, "Email ya en uso");
         }
 
+
+        const defaultAvatar = `https://api.dicebear.com/8.x/avataaars/svg?seed=${encodeURIComponent(name)}&radius=50&size=70`;
+
         //Encriptar la contraseña
         const password_hashed = await bcrypt.hash(password, 12);
 
@@ -22,6 +25,7 @@ class AuthService {
         const user_created = await UserRepository.createUser(
             name,
             email,
+            defaultAvatar,
             password_hashed
         );
         const verification_token = jwt.sign(
