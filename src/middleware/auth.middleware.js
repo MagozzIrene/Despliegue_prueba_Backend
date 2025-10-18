@@ -7,11 +7,11 @@ const authMiddleware = (request, response, next) => {
     try{
         const authorization_header = request.headers.authorization
         if(!authorization_header){
-            throw new ServerError(400, 'No hay header de autorizacion')
+            throw new ServerError(401, "Falta header de autorización")
         }
         const auth_token = authorization_header.split(' ').pop()
         if(!auth_token){
-            throw new ServerError(400, 'No hay token de autorizacion')
+            throw new ServerError(401, "Falta token de autorización")
         }
 
         const user_data = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET_KEY)
@@ -27,7 +27,7 @@ const authMiddleware = (request, response, next) => {
                     {
                         ok: false,
                         status: 401,
-                        message: 'Token invalido'
+                        message: 'Token inválido o malformado.'
                     }
                 )
             }
@@ -36,7 +36,7 @@ const authMiddleware = (request, response, next) => {
                     {
                         ok: false,
                         status: 401,
-                        message: 'Token expirado'
+                        message: 'Token expirado. Inicia sesión nuevamente.'
                     }
                 )
             }

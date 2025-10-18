@@ -1,57 +1,3 @@
-/* import Contacts from "../models/Contact.model.js";
-
-class ContactRepository {
-    static async createContact(requester_id, receiver_id) {
-        // Evita duplicados
-        const existing = await Contacts.findOne({ requester_id, receiver_id });
-        if (existing) return existing;
-
-        const contact = await Contacts.create({
-            requester_id,
-            receiver_id,
-            status: "pendiente",
-        });
-        return contact;
-    }
-
-    static async getContactsByUser(user_id) {
-        // Devuelve tanto los enviados como los recibidos
-        return await Contacts.find({
-            $or: [{ requester_id: user_id }, { receiver_id: user_id }],
-        })
-            .populate("requester_id", "name email avatar_url status")
-            .populate("receiver_id", "name email avatar_url status");
-    }
-
-    static async updateStatus(contact_id, new_status) {
-        const valid_status = ["pendiente", "aceptado", "rechazado"];
-        if (!valid_status.includes(new_status)) throw new Error("Estado inválido");
-
-        const updated = await Contacts.findByIdAndUpdate(
-            contact_id,
-            { status: new_status },
-            { new: true }
-        );
-
-        return updated;
-    }
-
-    static async deleteContact(contact_id) {
-        await Contacts.findByIdAndDelete(contact_id);
-        return true;
-    }
-
-    static async getPendingRequests(user_id) {
-        return await Contacts.find({
-            receiver_id: user_id,
-            status: "pendiente",
-        }).populate("requester_id", "name email avatar_url");
-    }
-}
-
-export default ContactRepository;
- */
-
 import Contacts from "../models/Contact.model.js";
 
 class ContactRepository {
@@ -77,7 +23,12 @@ class ContactRepository {
             status: "pendiente",
         });
 
-        return contact;
+        /* return contact; */
+
+        return await contact.populate([
+            { path: "requester_id", select: "name email avatar" },
+            { path: "receiver_id", select: "name email avatar" },
+        ]);
     }
 
     static async getContactsByUser(user_id, status = null) {
@@ -104,22 +55,35 @@ class ContactRepository {
             contact_id,
             { status: new_status },
             { new: true }
-        ).populate("requester_id", "name email avatar status")
+        )
+            .populate("requester_id", "name email avatar status")
             .populate("receiver_id", "name email avatar status");
+
+        if (!updated) {
+            throw new Error("Contacto no encontrado");
+        }
 
         return updated;
     }
 
     static async deleteContact(contact_id) {
-        await Contacts.findByIdAndDelete(contact_id);
-        return true;
+        /* await Contacts.findByIdAndDelete(contact_id);
+        return true; */
+
+        const deleted = await Contacts.findByIdAndDelete(contact_id)
+            .populate("requester_id", "name email avatar")
+            .populate("receiver_id", "name email avatar");
+        return deleted;
+
     }
 
     static async getPendingRequests(user_id) {
         return await Contacts.find({
             receiver_id: user_id,
             status: "pendiente",
-        }).populate("requester_id", "name email avatar status");
+        })
+            .populate("requester_id", "name email avatar status")
+            .populate("receiver_id", "name email avatar status");
     }
 
     static async getAcceptedContacts(user_id) {

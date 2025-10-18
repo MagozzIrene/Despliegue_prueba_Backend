@@ -1,11 +1,15 @@
 import express from "express";
 import GroupMessageController from "../controllers/groupMessage.controller.js";
+import isGroupMemberMiddleware from "../middleware/groupMember.middleware.js";
+import authMiddleware from "../middleware/auth.middleware.js";
 
-const router = express.Router();
+const groupMessage_router = express.Router();
 
-router.post("/", GroupMessageController.sendMessage);
-router.get("/:group_id", GroupMessageController.getMessages);
-router.patch("/read", GroupMessageController.markAsRead);
-router.delete("/:message_id", GroupMessageController.deleteMessage);
+groupMessage_router.use(authMiddleware);
 
-export default router;
+groupMessage_router.post("/", isGroupMemberMiddleware, GroupMessageController.sendMessage);
+groupMessage_router.get("/:group_id", isGroupMemberMiddleware, GroupMessageController.getMessages);
+groupMessage_router.patch("/read", isGroupMemberMiddleware, GroupMessageController.markAsRead);
+groupMessage_router.delete("/:message_id", isGroupMemberMiddleware, GroupMessageController.deleteMessage);
+
+export default groupMessage_router;

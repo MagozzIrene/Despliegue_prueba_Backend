@@ -1,16 +1,20 @@
 import express from "express";
 import GroupController from "../controllers/group.controller.js";
 import GroupMemberRepository from "../repositories/groupMember.repository.js";
+import authMiddleware from "../middleware/auth.middleware.js";
+import requireAdmin from "../middleware/requireAdmin.middleware.js";
 
-const router = express.Router();
+const group_router = express.Router();
 
-router.post("/", GroupController.createGroup);
-router.get("/", GroupController.getAll);
-router.get("/:id", GroupController.getById);
-router.put("/:id", GroupController.updateGroup);
-router.delete("/:id", GroupController.deleteGroup);
+group_router.use(authMiddleware);
 
-router.get("/user/:userId", async (req, res) => {
+group_router.post("/", GroupController.createGroup);
+group_router.get("/", GroupController.getAll);
+group_router.get("/:id", GroupController.getById);
+group_router.put("/:id", requireAdmin, GroupController.updateGroup);
+group_router.delete("/:id", requireAdmin, GroupController.deleteGroup);
+
+group_router.get("/user/:userId", async (req, res) => {
     try {
         const groups = await GroupMemberRepository.getGroupsByUser(req.params.userId);
         res.json({ ok: true, data: groups });
@@ -19,4 +23,4 @@ router.get("/user/:userId", async (req, res) => {
     }
 });
 
-export default router;
+export default group_router;

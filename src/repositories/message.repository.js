@@ -2,12 +2,19 @@ import Message from "../models/Message.model.js";
 
 class MessageRepository {
     static async createMessage(senderId, receiverId, text) {
-        return await Message.create({
+        const message = await Message.create({
             sender: senderId,
             receiver: receiverId,
             text,
         });
+
+        await message.populate([
+            { path: "sender", select: "name email avatar" },
+            { path: "receiver", select: "name email avatar" },
+        ]);
+        return message;
     }
+
 
     static async getConversation(userId1, userId2) {
         return await Message.find({
@@ -17,22 +24,29 @@ class MessageRepository {
             ],
         })
             .sort({ sent_at: 1 })
-            .populate("sender", "name email")
-            .populate("receiver", "name email");
+            .populate("sender", "name email avatar")
+            .populate("receiver", "name email avatar");
     }
 
     //Prueba
 
     static async markAsRead(message_id) {
-        return await Message.findByIdAndUpdate(
+        const updated = await Message.findByIdAndUpdate(
             message_id,
             { read: true },
             { new: true }
-        );
+        )
+
+            .populate("sender", "name email avatar")
+            .populate("receiver", "name email avatar");
+
+        return updated;
+
     }
 
     static async deleteMessage(messageId) {
-        return await Message.findByIdAndDelete(messageId);
+        const deleted = await Message.findByIdAndDelete(messageId);
+        return deleted;
     }
 }
 

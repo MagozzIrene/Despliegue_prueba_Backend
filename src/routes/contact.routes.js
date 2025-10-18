@@ -1,13 +1,16 @@
 import express from "express";
 import ContactController from "../controllers/contact.controller.js";
+import authMiddleware from "../middleware/auth.middleware.js";
 
-const router = express.Router();
+const contact_router = express.Router();
 
-router.post("/", ContactController.createContact);
-router.get("/:user_id", ContactController.getContacts);
-router.get("/:user_id/pending", ContactController.getPendingRequests);
-router.get("/:user_id/accepted", ContactController.getAcceptedContacts);
-router.put("/:contact_id", ContactController.updateStatus);
-router.delete("/:contact_id", ContactController.deleteContact);
+contact_router.use(authMiddleware);
 
-export default router;
+contact_router.post("/", ContactController.createContact);
+contact_router.get("/:user_id", ContactController.getContacts);
+contact_router.get("/:user_id/pending", ContactController.getPendingRequests);
+contact_router.get("/:user_id/accepted", ContactController.getAcceptedContacts);
+contact_router.put("/:contact_id", ContactController.updateStatus);
+contact_router.delete("/:contact_id", ContactController.deleteContact);
+
+export default contact_router;

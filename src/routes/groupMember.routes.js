@@ -1,12 +1,16 @@
 import express from "express";
 import GroupMemberController from "../controllers/groupMember.controller.js";
+import authMiddleware from "../middleware/auth.middleware.js";
+import requireAdmin from "../middleware/requireAdmin.middleware.js";
 
-const router = express.Router();
+const groupMember_router = express.Router();
 
-router.post("/", GroupMemberController.addMember);
-router.delete("/", GroupMemberController.removeMember);
-router.get("/:group_id", GroupMemberController.getMembers);
-router.get("/user/:user_id", GroupMemberController.getGroupsByUser);
-router.put("/sync", GroupMemberController.syncMembers);
+groupMember_router.use(authMiddleware);
 
-export default router
+groupMember_router.post("/", requireAdmin, GroupMemberController.addMember);
+groupMember_router.delete("/", requireAdmin, GroupMemberController.removeMember);
+groupMember_router.get("/:group_id", GroupMemberController.getMembers);
+groupMember_router.get("/user/:user_id", GroupMemberController.getGroupsByUser);
+groupMember_router.put("/sync", GroupMemberController.syncMembers);
+
+export default groupMember_router

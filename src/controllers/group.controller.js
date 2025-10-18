@@ -13,7 +13,7 @@ class GroupController {
 
             res.status(201).json({
                 ok: true,
-                message: "Grupo creado exitosamente 🎉",
+                message: "Grupo creado exitosamente",
                 data: group
             });
         } catch (error) {
@@ -59,7 +59,7 @@ class GroupController {
             await GroupRepository.deleteGroup(id);
             res.json({
                 ok: true,
-                message: `Grupo "${group.name}" eliminado correctamente 🗑️`
+                message: `Grupo "${group.name}" eliminado correctamente`
             });
         } catch (error) {
             res.status(500).json({ ok: false, message: error.message });

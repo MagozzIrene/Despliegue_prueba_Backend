@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+import GroupMember from "./GroupMember.model.js";
+import GroupMessage from "./GroupMessage.model.js";
+
 const groupSchema = new mongoose.Schema(
     {
         name: {
@@ -30,6 +33,24 @@ const groupSchema = new mongoose.Schema(
     },
     { versionKey: false }
 );
+
+groupSchema.pre("findOneAndDelete", async function (next) {
+    try {
+        const groupId = this.getQuery()._id;
+
+        await Promise.all([
+            GroupMember.deleteMany({ group_id: groupId }),
+            GroupMessage.deleteMany({ group_id: groupId })
+        ]);
+
+        console.log(`Grupo ${groupId} eliminado junto con sus mensajes y miembros.`);
+        next();
+    } catch (error) {
+        console.error("Error en eliminación en cascada de grupo:", error);
+        next(error);
+    }
+});
+
 
 const Groups = mongoose.model("Group", groupSchema);
 export default Groups;

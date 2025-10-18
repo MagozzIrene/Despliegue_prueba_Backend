@@ -4,12 +4,12 @@ import dotenv from "dotenv";
 import connectMongoDB from "./config/mongoDB.config.js";
 
 import auth_router from "./routes/auth.router.js";
-import contactRoutes from "./routes/contact.routes.js";
-import groupRoutes from "./routes/group.routes.js";
-import groupMemberRoutes from "./routes/groupMember.routes.js";
-import messageRoutes from "./routes/message.routes.js";
+import contact_router from "./routes/contact.routes.js";
+import group_router from "./routes/group.routes.js";
+import groupMember_router from "./routes/groupMember.routes.js";
+import message_router from "./routes/message.routes.js";
 import authMiddleware from "./middleware/auth.middleware.js";
-import groupMessageRoutes from "./routes/groupMessage.routes.js";
+import groupMessage_router from "./routes/groupMessage.routes.js";
 
 dotenv.config();
 
@@ -45,11 +45,11 @@ app.use(express.urlencoded({ extended: true }));
 connectMongoDB();
 
 app.use("/api/auth", auth_router);
-app.use("/api/contacts", contactRoutes);
-app.use("/api/groups", groupRoutes);
-app.use("/api/group-members", groupMemberRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/group-messages", groupMessageRoutes);
+app.use("/api/contacts", contact_router);
+app.use("/api/groups", group_router);
+app.use("/api/group-members", groupMember_router);
+app.use("/api/messages", message_router);
+app.use("/api/group-messages", groupMessage_router);
 
 app.get("/ruta-protegida", authMiddleware, (req, res) => {
     console.log(req.user);

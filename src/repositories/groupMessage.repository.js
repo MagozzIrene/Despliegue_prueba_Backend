@@ -13,12 +13,16 @@ class GroupMessageRepository {
             text,
         });
 
-        return await message.populate("sender_id", "name email");
+        return await message.populate([
+            { path: "sender_id", select: "name email avatar" },
+            { path: "group_id", select: "name avatar" },
+        ]);
     }
 
     static async getMessagesByGroup(group_id) {
         const messages = await GroupMessage.find({ group_id })
-            .populate("sender_id", "name email")
+            .populate("sender_id", "name email avatar")
+            .populate("group_id", "name avatar")
             .sort({ sent_at: 1 });
 
         return messages;
@@ -30,8 +34,8 @@ class GroupMessageRepository {
             { $addToSet: { read_by: user_id } },
             { new: true }
         )
-            .populate("sender_id", "name email")
-            .populate("read_by", "name email");
+            .populate("sender_id", "name email avatar")
+            .populate("read_by", "name email avatar");
 
         if (!message) throw new ServerError(404, "Mensaje no encontrado");
         return message;
@@ -40,7 +44,7 @@ class GroupMessageRepository {
     static async deleteMessage(message_id) {
         const deleted = await GroupMessage.findByIdAndDelete(message_id);
         if (!deleted) throw new ServerError(404, "Mensaje no encontrado");
-        return true;
+        return deleted;
     }
 }
 

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import GroupMessage from "./GroupMessage.model.js";
+
 const groupMemberSchema = new mongoose.Schema(
     {
         group_id: {
@@ -24,6 +26,27 @@ const groupMemberSchema = new mongoose.Schema(
     },
     { versionKey: false }
 );
+
+groupMemberSchema.pre("findOneAndDelete", async function (next) {
+    try {
+        const membership = await this.model.findOne(this.getQuery());
+        if (!membership) return next();
+
+        await GroupMessage.deleteMany({
+            group_id: membership.group_id,
+            sender_id: membership.user_id,
+        });
+
+        console.log(
+            `Mensajes del usuario ${membership.user_id} en el grupo ${membership.group_id} eliminados al quitar la membresía.`
+        );
+
+        next();
+    } catch (error) {
+        console.error("Error en cascade delete de GroupMember:", error);
+        next(error);
+    }
+});
 
 const GroupMember = mongoose.model("GroupMember", groupMemberSchema);
 
