@@ -5,10 +5,11 @@ class ContactController {
 
     static async createContact(req, res) {
         try {
-            const { requester_id, receiver_id } = req.body;
+            const requester_id = req.user.id;
+            const { receiver_id } = req.body;
 
-            if (!requester_id || !receiver_id) {
-                throw new ServerError(400, "Faltan datos requeridos");
+            if (!receiver_id) {
+                throw new ServerError(400, "Faltan datos requeridos: receiver_id");
             }
 
             const contact = await ContactRepository.createContact(
@@ -85,8 +86,9 @@ class ContactController {
     static async deleteContact(req, res) {
         try {
             const { contact_id } = req.params;
+            const userId = req.user.id;
 
-            await ContactRepository.deleteContact(contact_id);
+            await ContactRepository.deleteContact(contact_id, userId);
 
             res.status(200).json({
                 ok: true,

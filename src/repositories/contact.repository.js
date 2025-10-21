@@ -69,15 +69,23 @@ class ContactRepository {
         return updated;
     }
 
-    static async deleteContact(contact_id) {
-        /* await Contacts.findByIdAndDelete(contact_id);
-        return true; */
+    static async deleteContact(contact_id, user_id) {
+        const contact = await Contacts.findById(contact_id);
+        if (!contact) throw new Error("Contacto no encontrado");
+
+        const isAuthorized =
+            contact.requester_id.toString() === user_id.toString() ||
+            contact.receiver_id.toString() === user_id.toString();
+
+        if (!isAuthorized) {
+            throw new Error("No tienes permiso para eliminar este contacto");
+        }
 
         const deleted = await Contacts.findByIdAndDelete(contact_id)
             .populate("requester_id", "name email avatar")
             .populate("receiver_id", "name email avatar");
-        return deleted;
 
+        return deleted;
     }
 
     static async getPendingRequests(user_id) {
