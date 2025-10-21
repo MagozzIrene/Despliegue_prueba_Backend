@@ -11,6 +11,6 @@ groupMember_router.post("/", requireAdmin, GroupMemberController.addMember);
 groupMember_router.delete("/", requireAdmin, GroupMemberController.removeMember);
 groupMember_router.get("/:group_id", GroupMemberController.getMembers);
 groupMember_router.get("/user/:user_id", GroupMemberController.getGroupsByUser);
-groupMember_router.put("/sync", GroupMemberController.syncMembers);
+groupMember_router.put("/sync", requireAdmin, GroupMemberController.syncMembers);
 
 export default groupMember_router

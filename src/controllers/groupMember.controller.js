@@ -4,8 +4,13 @@ class GroupMemberController {
     static async addMember(req, res) {
         try {
             const { group_id, user_id } = req.body;
+            const requester_id = req.user.id;
 
-            const member = await GroupMemberRepository.addMember(group_id, user_id);
+            const member = await GroupMemberRepository.addMember(
+                group_id,
+                user_id,
+                requester_id
+            );
 
             res.status(201).json({
                 ok: true,

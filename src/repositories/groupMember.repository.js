@@ -5,20 +5,22 @@ import Contacts from "../models/Contact.model.js";
 
 class GroupMemberRepository {
 
-    static async addMember(group_id, user_id) {
+    static async addMember(group_id, user_id, requester_id) {
         const group = await Group.findById(group_id);
         if (!group) throw new ServerError(404, "Grupo no encontrado");
-        
 
         const contact = await Contacts.findOne({
             $or: [
-                { requester_id: requester_id, receiver_id: user_id, status: "aceptado" },
+                { requester_id, receiver_id: user_id, status: "aceptado" },
                 { requester_id: user_id, receiver_id: requester_id, status: "aceptado" },
             ],
         });
 
         if (!contact) {
-            throw new ServerError(403, "Solo puedes agregar usuarios que sean tus contactos");
+            throw new ServerError(
+                403,
+                "Solo puedes agregar usuarios que sean tus contactos aceptados"
+            );
         }
 
 
