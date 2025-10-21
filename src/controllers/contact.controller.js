@@ -49,8 +49,9 @@ class ContactController {
         try {
             const { contact_id } = req.params;
             const { status } = req.body;
+            const userId = req.user.id;
 
-            const updated = await ContactRepository.updateStatus(contact_id, status);
+            const updated = await ContactRepository.updateStatus(contact_id, status, userId);
 
             res.status(200).json({
                 ok: true,

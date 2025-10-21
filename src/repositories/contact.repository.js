@@ -45,10 +45,17 @@ class ContactRepository {
             .populate("receiver_id", "name email avatar status");
     }
 
-    static async updateStatus(contact_id, new_status) {
+    static async updateStatus(contact_id, new_status, user_id) {
         const valid_status = ["pendiente", "aceptado", "rechazado"];
         if (!valid_status.includes(new_status)) {
             throw new Error("Estado inválido. Use: pendiente, aceptado o rechazado");
+        }
+
+        const contact = await Contacts.findById(contact_id);
+        if (!contact) throw new Error("Contacto no encontrado");
+
+        if (contact.receiver_id.toString() !== user_id.toString()) {
+            throw new Error("Solo el receptor de la solicitud puede cambiar su estado");
         }
 
         const updated = await Contacts.findByIdAndUpdate(
@@ -58,10 +65,6 @@ class ContactRepository {
         )
             .populate("requester_id", "name email avatar status")
             .populate("receiver_id", "name email avatar status");
-
-        if (!updated) {
-            throw new Error("Contacto no encontrado");
-        }
 
         return updated;
     }
