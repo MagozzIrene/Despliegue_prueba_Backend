@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-import GroupMessage from "./GroupMessage.model.js";
-
 const groupMemberSchema = new mongoose.Schema(
     {
         group_id: {
@@ -31,6 +29,8 @@ groupMemberSchema.pre("findOneAndDelete", async function (next) {
     try {
         const membership = await this.model.findOne(this.getQuery());
         if (!membership) return next();
+
+        const GroupMessage = (await import("./GroupMessage.model.js")).default;
 
         await GroupMessage.deleteMany({
             group_id: membership.group_id,
