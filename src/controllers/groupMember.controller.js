@@ -5,14 +5,12 @@ class GroupMemberController {
         try {
             const { group_id, user_id } = req.body;
 
-            const requester_id = req.user.id;
+            const member = await GroupMemberRepository.addMember(group_id, user_id);
 
-
-            const member = await GroupMemberRepository.addMember(group_id, user_id, requester_id);
             res.status(201).json({
                 ok: true,
                 message: "Miembro agregado correctamente ✅",
-                data: member
+                data: member,
             });
         } catch (error) {
             res
@@ -56,11 +54,14 @@ class GroupMemberController {
     static async syncMembers(req, res) {
         try {
             const { group_id, members } = req.body;
-            const updatedMembers = await GroupMemberRepository.syncMembers(group_id, members);
+            const updatedMembers = await GroupMemberRepository.syncMembers(
+                group_id,
+                members
+            );
             res.json({
                 ok: true,
                 message: "Miembros sincronizados correctamente 🔄",
-                data: updatedMembers
+                data: updatedMembers,
             });
         } catch (error) {
             res
