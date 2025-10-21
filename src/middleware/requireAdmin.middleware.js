@@ -9,7 +9,8 @@ const requireAdmin = async (req, res, next) => {
         const group = await GroupRepository.getById(groupId);
         if (!group) throw new ServerError(404, "Grupo no encontrado");
 
-        if (String(group.admin) !== String(req.user.id)) {
+        const adminId = group.admin._id || group.admin;
+        if (String(adminId) !== String(req.user.id)) {
             throw new ServerError(403, "Solo el admin del grupo puede realizar esta acción");
         }
 
