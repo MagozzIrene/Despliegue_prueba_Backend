@@ -5,16 +5,21 @@ import { ServerError } from "../utils/customError.utils.js";
 
 class GroupRepository {
     static async createGroup(name, description, admin, members = []) {
-        if (!name || !admin)
-            throw new ServerError(400, "Nombre y admin son obligatorios");
+        if (!name)
+            throw new ServerError(400, "El nombre del grupo es obligatorio");
 
         const group = await Groups.create({ name, description, admin });
 
         await GroupMemberRepository.addMember(group._id, admin);
-
         await GroupMemberRepository.syncMembers(group._id, members);
 
         return await this.getById(group._id);
+
+    }
+
+    static async createOnly(name, description, admin) {
+        if (!name) throw new ServerError(400, "El nombre del grupo es obligatorio");
+        return await Groups.create({ name, description, admin });
     }
 
     static async getAll() {

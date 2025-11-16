@@ -7,9 +7,11 @@ const contact_router = express.Router();
 contact_router.use(authMiddleware);
 
 contact_router.post("/", ContactController.createContact);
-contact_router.get("/:user_id", ContactController.getContacts);
-contact_router.get("/:user_id/pending", ContactController.getPendingRequests);
-contact_router.get("/:user_id/accepted", ContactController.getAcceptedContacts);
+contact_router.get("/", ContactController.getContacts);
+
+contact_router.get("/pending", ContactController.getPendingRequests);
+contact_router.get("/accepted", ContactController.getAcceptedContacts);
+
 contact_router.put("/:contact_id", ContactController.updateStatus);
 contact_router.delete("/:contact_id", ContactController.deleteContact);
 

@@ -19,12 +19,15 @@ class GroupMessageRepository {
         ]);
     }
 
-    static async getMessagesByGroup(group_id) {
-        const messages = await GroupMessage.find({ group_id })
+    static async getMessagesByGroup(group_id, { limit = null, sort = "asc" } = {}) {
+        let query = GroupMessage.find({ group_id })
             .populate("sender_id", "name email avatar")
             .populate("group_id", "name avatar")
-            .sort({ sent_at: 1 });
+            .sort({ sent_at: sort === "asc" ? 1 : -1 });
 
+        if (limit) query = query.limit(limit);
+
+        const messages = await query;
         return messages;
     }
 
@@ -45,6 +48,12 @@ class GroupMessageRepository {
         const deleted = await GroupMessage.findByIdAndDelete(message_id);
         if (!deleted) throw new ServerError(404, "Mensaje no encontrado");
         return deleted;
+    }
+
+    static async getById(message_id) {
+    return await GroupMessage.findById(message_id)
+        .populate("sender_id", "name email avatar")
+        .populate("group_id", "name avatar");
     }
 }
 

@@ -15,7 +15,6 @@ class MessageRepository {
         return message;
     }
 
-
     static async getConversation(userId1, userId2) {
         return await Message.find({
             $or: [
@@ -47,6 +46,16 @@ class MessageRepository {
     static async deleteMessage(messageId) {
         const deleted = await Message.findByIdAndDelete(messageId);
         return deleted;
+    }
+
+    static async getById(id) {
+        return await Message.findById(id);
+    }
+
+    static async getByIdPopulated(id) {
+        return await Message.findById(id)
+            .populate("sender", "name email avatar")
+            .populate("receiver", "name email avatar");
     }
 }
 

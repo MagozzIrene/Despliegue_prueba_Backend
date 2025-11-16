@@ -15,6 +15,8 @@ const groupMessageSchema = new mongoose.Schema(
         text: {
             type: String,
             required: true,
+            trim: true,
+            maxlength: [1000, "El mensaje no puede superar los 1000 caracteres"],
         },
         read_by: [
             {

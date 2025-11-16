@@ -1,9 +1,7 @@
 import dotenv from 'dotenv'
-//Carga todas las variables de entorno dentro de process.env
+
 dotenv.config()
 
-
-//Creamos una constante de facil acceso a mis variables de entorno
 const ENVIRONMENT = {
     PORT: process.env.PORT,
     MONGO_DB_CONNECTION_STRING: process.env.MONGO_DB_CONNECTION_STRING,
@@ -13,7 +11,5 @@ const ENVIRONMENT = {
     BACKEND_URL: process.env.BACKEND_URL,
     FRONTEND_URL: process.env.FRONTEND_URL
 };
-
-//prueba
 
 export default ENVIRONMENT

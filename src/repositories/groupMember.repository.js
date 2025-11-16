@@ -1,28 +1,15 @@
 import GroupMember from "../models/GroupMember.model.js";
 import Group from "../models/Group.model.js";
 import { ServerError } from "../utils/customError.utils.js";
-import Contacts from "../models/Contact.model.js";
 
 class GroupMemberRepository {
 
-    static async addMember(group_id, user_id, requester_id) {
+    static async addMember(group_id, user_id) {
         const group = await Group.findById(group_id);
         if (!group) throw new ServerError(404, "Grupo no encontrado");
 
-        const contact = await Contacts.findOne({
-            $or: [
-                { requester_id, receiver_id: user_id, status: "aceptado" },
-                { requester_id: user_id, receiver_id: requester_id, status: "aceptado" },
-            ],
-        });
-
-        if (!contact) {
-            throw new ServerError(
-                403,
-                "Solo puedes agregar usuarios que sean tus contactos aceptados"
-            );
-        }
-
+        if (!group.active)
+            throw new ServerError(403, "No se pueden agregar miembros a un grupo inactivo");
 
         const existingMember = await GroupMember.findOne({ group_id, user_id });
         if (existingMember) throw new ServerError(400, "El usuario ya es miembro del grupo");
@@ -35,7 +22,6 @@ class GroupMemberRepository {
 
         return await member.populate("user_id", "name email");
     }
-
 
     static async removeMember(group_id, user_id) {
         const group = await Group.findById(group_id);
@@ -84,6 +70,27 @@ class GroupMemberRepository {
         }
 
         return await this.getMembersByGroup(group_id);
+    }
+
+    static async findByGroupAndUser(group_id, user_id) {
+        return await GroupMember.findOne({ group_id, user_id });
+    }
+
+    static async changeRole(group_id, member_id, newRole) {
+        const validRoles = ["admin", "miembro"];
+        if (!validRoles.includes(newRole))
+            throw new ServerError(400, "Rol inválido");
+
+        const updated = await GroupMember.findOneAndUpdate(
+            { group_id, user_id: member_id },
+            { role: newRole },
+            { new: true }
+        ).populate("user_id", "name email");
+
+        if (!updated)
+            throw new ServerError(404, "Miembro no encontrado");
+
+        return updated;
     }
 }
 

@@ -43,7 +43,6 @@ groupSchema.pre("findOneAndDelete", async function (next) {
             GroupMessage.deleteMany({ group_id: groupId }),
         ]);
 
-        console.log(`Grupo ${groupId} eliminado junto con sus mensajes y miembros.`);
         next();
     } catch (error) {
         console.error("Error en eliminación en cascada de grupo:", error);

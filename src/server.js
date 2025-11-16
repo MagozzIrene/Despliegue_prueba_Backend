@@ -10,6 +10,8 @@ import groupMember_router from "./routes/groupMember.routes.js";
 import message_router from "./routes/message.routes.js";
 import authMiddleware from "./middleware/auth.middleware.js";
 import groupMessage_router from "./routes/groupMessage.routes.js";
+import groupInvite_router from "./routes/groupInvite.routes.js";
+import user_router from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -45,15 +47,20 @@ app.use(express.urlencoded({ extended: true }));
 connectMongoDB();
 
 app.use("/api/auth", auth_router);
+app.use("/api/users", user_router);
 app.use("/api/contacts", contact_router);
 app.use("/api/groups", group_router);
+app.use("/api/group-invites", groupInvite_router);
 app.use("/api/group-members", groupMember_router);
 app.use("/api/messages", message_router);
 app.use("/api/group-messages", groupMessage_router);
 
 app.get("/ruta-protegida", authMiddleware, (req, res) => {
     console.log(req.user);
-    res.json({ ok: true, user: req.user });
+    res.json({ 
+        ok: true, 
+        user: req.user 
+    });
 });
 
 export default app;
@@ -61,6 +68,6 @@ export default app;
 if (process.env.NODE_ENV !== "production") {
     const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
-        console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+        console.log(`Servidor corriendo en http://localhost:${PORT}`);
     });
 }

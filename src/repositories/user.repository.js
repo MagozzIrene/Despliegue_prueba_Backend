@@ -1,16 +1,6 @@
 import Users from "../models/User.model.js";
 
-
 class UserRepository {
-    /*     static async createUser(name, email, password){
-            //Logica de interaccion con la DB para crear el usuario
-            const result =  await Users.insertOne({
-                name: name,
-                email: email,
-                password: password,
-            })
-            return result
-        } */
 
     static async createUser(name, email, avatar = "", password) {
         const user = await Users.create({
@@ -19,11 +9,11 @@ class UserRepository {
             avatar,
             password,
         })
-        return user // trae _id y respeta defaults del schema
+        return user
     }
 
     static async getAll() {
-        //.find es un metodo para hacer filtro en una coleccion
+
         const users = await Users.find()
         return users
     }
@@ -43,13 +33,12 @@ class UserRepository {
             user_id,
             new_values,
             {
-                new: true //Cuando se haga la actualizacion nos traiga el objeto actualizado
+                new: true
             }
         )
 
         return user_updated
     }
-
 
     static async getByEmail(email) {
         const user = await Users.findOne({ email: email })
@@ -58,17 +47,3 @@ class UserRepository {
 }
 
 export default UserRepository
-
-
-//Un metodo o propiedad estatica puede ser llamada desde la clase, sin necesidad de instanciar dicha clase
-//Por que usar estaticos? para no tener mas de una instancia del userRepository
-
-
-
-
-
-
-/* 
-const userRepository = new UserRepository()
-userRepository.createUser() 
-*/

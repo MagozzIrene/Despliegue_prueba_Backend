@@ -2,7 +2,11 @@ import ENVIRONMENT from "../config/environment.config.js"
 import { ServerError } from "../utils/customError.utils.js"
 import jwt from 'jsonwebtoken'
 
+
+
 const authMiddleware = (request, response, next) => {
+
+console.log("🧩 AUTH HEADER:", request.headers.authorization);
 
     try{
         const authorization_header = request.headers.authorization
@@ -13,6 +17,8 @@ const authMiddleware = (request, response, next) => {
         if(!auth_token){
             throw new ServerError(401, "Falta token de autorización")
         }
+
+        console.log("🧩 TOKEN:", auth_token);
 
         const user_data = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET_KEY)
 
