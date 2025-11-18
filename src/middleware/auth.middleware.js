@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 
 const authMiddleware = (request, response, next) => {
 
-console.log("🧩 AUTH HEADER:", request.headers.authorization);
+console.log("AUTH HEADER:", request.headers.authorization);
 
     try{
         const authorization_header = request.headers.authorization
@@ -18,7 +18,7 @@ console.log("🧩 AUTH HEADER:", request.headers.authorization);
             throw new ServerError(401, "Falta token de autorización")
         }
 
-        console.log("🧩 TOKEN:", auth_token);
+        console.log("TOKEN:", auth_token);
 
         const user_data = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET_KEY)
 

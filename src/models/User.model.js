@@ -27,14 +27,26 @@ const userSchema = new mongoose.Schema(
             required: true,
             default: false
         },
-        avatar: { 
-            type: String, 
-            default: "" 
+        avatar: {
+            type: String,
+            default: ""
         },
         active: {
             type: Boolean,
             default: true
-        }
+        },
+        last_seen: { 
+            type: Date, 
+            default: null 
+        },
+        is_online: { 
+            type: Boolean, 
+            default: false 
+        },
+        last_ping: { 
+            type: Date, 
+            default: null 
+        },
     },
     { timestamps: { createdAt: "created_at", updatedAt: "modified_at" } }
 )

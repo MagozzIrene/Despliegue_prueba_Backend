@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectMongoDB from "./config/mongoDB.config.js";
-
 import auth_router from "./routes/auth.router.js";
 import contact_router from "./routes/contact.routes.js";
 import group_router from "./routes/group.routes.js";
@@ -12,6 +11,7 @@ import authMiddleware from "./middleware/auth.middleware.js";
 import groupMessage_router from "./routes/groupMessage.routes.js";
 import groupInvite_router from "./routes/groupInvite.routes.js";
 import user_router from "./routes/user.routes.js";
+import presence_router from "./routes/presence.routes.js";
 
 dotenv.config();
 
@@ -47,6 +47,9 @@ app.use(express.urlencoded({ extended: true }));
 connectMongoDB();
 
 app.use("/api/auth", auth_router);
+
+app.use("/api/presence", presence_router);
+
 app.use("/api/users", user_router);
 app.use("/api/contacts", contact_router);
 app.use("/api/groups", group_router);

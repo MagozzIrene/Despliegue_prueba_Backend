@@ -174,7 +174,6 @@ class AuthController {
             }
         }
     }
-
     static async recoverPassword(req, res) {
         try {
             const { email } = req.body;
@@ -194,7 +193,6 @@ class AuthController {
             });
         }
     }
-
     static async showResetForm(req, res) {
         const { token } = req.params;
         return res.send(`
@@ -278,7 +276,6 @@ class AuthController {
     </html>
     `);
     }
-
     static async resetPassword(req, res) {
         try {
             const { token } = req.params;
@@ -299,9 +296,6 @@ class AuthController {
             return res.status(500).send("Error al actualizar contraseña.");
         }
     }
-
 }
 
-
-
-export default AuthController   
+export default AuthController

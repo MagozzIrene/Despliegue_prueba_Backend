@@ -141,6 +141,9 @@ class AuthService {
                 expiresIn: "7d",
             }
         );
+
+        await UserRepository.updateById(user._id, { is_online: true, last_seen: new Date() });
+
         return {
             authorization_token,
             user: {
