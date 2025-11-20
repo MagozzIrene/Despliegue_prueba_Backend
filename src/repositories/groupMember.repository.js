@@ -50,8 +50,9 @@ class GroupMemberRepository {
     }
 
     static async getGroupsByUser(user_id) {
-        const groups = await GroupMember.find({ user_id }).populate("group_id", "name description");
-        return groups.map((m) => m.group_id);
+        return await GroupMember.find({ user_id })
+            .populate("group_id", "name description avatar")
+            .populate("user_id", "name email avatar");
     }
 
     static async syncMembers(group_id, new_members = []) {

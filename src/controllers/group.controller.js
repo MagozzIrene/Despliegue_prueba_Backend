@@ -10,13 +10,16 @@ class GroupController {
 
             if (!name)
                 throw new ServerError(400, "El nombre del grupo es obligatorio");
-
             const group = await GroupService.createGroup({ name, description, admin, members });
+
+            const fullGroup = await (await import("../models/Group.model.js")).default
+                .findById(group._id)
+                .lean();
 
             res.status(201).json({
                 ok: true,
                 message: "Grupo creado exitosamente",
-                data: group
+                data: fullGroup
             });
         } catch (error) {
             res

@@ -17,11 +17,6 @@ class MessageController {
                 contact.receiver_id._id.toString() === receiverId
             );
 
-
-            console.log("🧩 Contactos aceptados:", contacts);
-            console.log("🧩 ReceiverId:", receiverId);
-
-
             if (!isContact)
                 throw new ServerError(403, "Solo puedes enviar mensajes a tus contactos");
 

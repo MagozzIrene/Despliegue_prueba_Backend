@@ -5,10 +5,14 @@ const groupSchema = new mongoose.Schema(
         name: {
             type: String,
             required: true,
+            trim: true,
+            maxlength: 20,
         },
         description: {
             type: String,
             default: "",
+            trim: true,
+            maxlength: 40,
         },
         avatar: {
             type: String,

@@ -9,7 +9,7 @@ groupMessage_router.use(authMiddleware);
 
 groupMessage_router.post("/", isGroupMemberMiddleware, GroupMessageController.sendMessage);
 groupMessage_router.get("/:group_id", isGroupMemberMiddleware, GroupMessageController.getMessages);
-groupMessage_router.patch("/read/:message_id", isGroupMemberMiddleware, GroupMessageController.markAsRead);
-groupMessage_router.delete("/:message_id", isGroupMemberMiddleware, GroupMessageController.deleteMessage);
+groupMessage_router.patch("/read/:message_id", GroupMessageController.markAsRead);
+groupMessage_router.delete("/:message_id", GroupMessageController.deleteMessage); 
 
 export default groupMessage_router;

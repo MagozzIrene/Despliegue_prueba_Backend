@@ -68,7 +68,12 @@ class GroupMessageService {
         const isMember = await GroupMemberRepository.isMember(message.group_id, user_id);
         if (!isMember) throw new ServerError(403, "No sos miembro de este grupo");
 
-        if (String(message.sender_id) !== String(user_id))
+        const senderId =
+            typeof message.sender_id === "object"
+                ? message.sender_id._id
+                : message.sender_id;
+
+        if (String(senderId) !== String(user_id))
             throw new ServerError(403, "Solo el emisor puede eliminar su mensaje");
 
         return await GroupMessageRepository.deleteMessage(message_id);

@@ -1,6 +1,8 @@
 import GroupMemberRepository from "../repositories/groupMember.repository.js";
 import GroupRepository from "../repositories/group.repository.js";
 import { ServerError } from "../utils/customError.utils.js";
+import GroupMessage from "../models/GroupMessage.model.js";
+import GroupMember from "../models/GroupMember.model.js";
 
 class GroupMemberService {
 
@@ -73,7 +75,41 @@ class GroupMemberService {
 
     static async getGroupsByUser(user_id) {
         if (!user_id) throw new ServerError(400, "Falta el ID del usuario");
-        return await GroupMemberRepository.getGroupsByUser(user_id);
+
+        const memberships = await GroupMember.find({ user_id })
+            .populate("group_id", "name description avatar created_at");
+
+        const result = [];
+
+        for (const m of memberships) {
+            const g = m.group_id;
+            if (!g) continue;
+
+            const lastMsg = await GroupMessage.findOne({ group_id: g._id })
+                .sort({ sent_at: -1 })
+                .select("text sent_at sender_id")
+                .populate("sender_id", "name")
+
+            result.push({
+                _id: g._id,
+                name: g.name,
+                description: g.description || "",
+                avatar: g.avatar || "",
+                created_at: g.created_at,
+                last_message: lastMsg?.text || "",
+                last_message_time: lastMsg?.sent_at || null,
+                last_message_sender: lastMsg?.sender_id?.name || null,
+                unread_count: 0,
+            });
+        }
+
+        result.sort((a, b) => {
+            const tA = a.last_message_time ? new Date(a.last_message_time).getTime() : 0;
+            const tB = b.last_message_time ? new Date(b.last_message_time).getTime() : 0;
+            return tB - tA;
+        });
+
+        return result;
     }
 
     static async syncMembers(group_id, admin_id, members) {
