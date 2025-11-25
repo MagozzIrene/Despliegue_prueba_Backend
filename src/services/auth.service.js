@@ -86,17 +86,17 @@ class AuthService {
         const resetLink = `${ENVIRONMENT.BACKEND_URL}/api/auth/reset-password/${token}`;
 
         const html = `
-        <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
-            <div style="max-width: 500px; background: white; margin: auto; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <h2 style="color: #128C7E;">Recuperación de contraseña 🔑</h2>
-                <p style="color: #555;">Hola ${user.name || "usuario"},</p>
-                <p style="color: #555;">Recibimos una solicitud para restablecer tu contraseña.</p>
+        <div style="font-family: Arial, sans-serif; background-color: #161616; padding: 20px;">
+            <div style="max-width: 500px; background: #1f1f1f; margin: auto; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #333;">
+                <h2 style="color: #2a7b6f;">Recuperación de contraseña 🔑</h2>
+                <p style="color: #eaeaea;">Hola ${user.name || "usuario"},</p>
+                <p style="color: #eaeaea;">Recibimos una solicitud para restablecer tu contraseña.</p>
                 <p>Podés hacerlo haciendo clic en el botón de abajo:</p>
                 <a href="${resetLink}"
-                    style="display:inline-block;background-color:#128C7E;color:white;padding:12px 20px;text-decoration:none;border-radius:6px;font-weight:bold;margin-top:20px;">
+                    style="display:inline-block;background-color: #2a7b6f;color:white;padding:12px 20px;text-decoration:none;border-radius:6px;font-weight:bold;margin-top:20px;">
                     Restablecer contraseña
                 </a>
-                <p style="color:#888;font-size:12px;margin-top:20px;">
+                <p style="color: #eaeaea;font-size:12px;margin-top:20px;">
                     Si no realizaste esta solicitud, ignorá este correo.
                 </p>
             </div>
