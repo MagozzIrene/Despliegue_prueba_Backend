@@ -112,13 +112,13 @@ class AuthController {
                         body {
                             font-family: Arial, sans-serif;
                             background: #161616;
-                            color: white;
+                            color: #dbdbdb;
                             text-align: center;
                             padding: 50px;
                         }
                         .card {
-                            background: white;
-                            color: #1f1f1f;
+                            background: #1f1f1f;
+                            color: #dbdbdb;
                             border-radius: 16px;
                             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                             display: inline-block;
