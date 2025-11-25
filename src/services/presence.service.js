@@ -4,6 +4,7 @@ import { ServerError } from "../utils/customError.utils.js";
 const ONLINE_TTL_MS = 70_000;
 
 class PresenceService {
+    
     static async setOnline(userId) {
         if (!userId) throw new ServerError(401, "Usuario no autenticado");
 

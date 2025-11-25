@@ -3,6 +3,7 @@ import ContactRepository from "../repositories/contact.repository.js";
 import { ServerError } from "../utils/customError.utils.js";
 
 class MessageService {
+    
     static async sendMessage(sender_id, receiver_id, text) {
         if (!sender_id || !receiver_id || !text)
             throw new ServerError(400, "Faltan datos requeridos");

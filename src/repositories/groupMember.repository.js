@@ -20,7 +20,7 @@ class GroupMemberRepository {
             role: group.admin.toString() === user_id.toString() ? "admin" : "miembro",
         });
 
-        return await member.populate("user_id", "name email");
+        return await member.populate("user_id", "name email avatar");
     }
 
     static async removeMember(group_id, user_id) {
@@ -39,8 +39,8 @@ class GroupMemberRepository {
 
     static async getMembersByGroup(group_id) {
         const members = await GroupMember.find({ group_id })
-            .populate("user_id", "name email")
-            .populate("group_id", "name description");
+            .populate("user_id", "name email avatar")
+            .populate("group_id", "name description avatar");
         return members;
     }
 

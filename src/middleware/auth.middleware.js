@@ -64,7 +64,7 @@ const authMiddleware = (request, response, next) => {
 
 }
 
-export default authMiddleware */
+export default authMiddleware PARECE FUNCAR BIEN EL CAMBIO, PERO MANTENGO LO VIEJO UN TOQUE MAS POR LAS DUDAS*/
 
 import ENVIRONMENT from "../config/environment.config.js";
 import { ServerError } from "../utils/customError.utils.js";
