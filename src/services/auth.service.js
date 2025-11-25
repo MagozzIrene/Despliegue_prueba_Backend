@@ -37,7 +37,7 @@ class AuthService {
             subject: "Verificacion de correo electronico",
             html: `
                 <div style="font-family: Arial, sans-serif; background-color: #1f1f1f; padding: 20px;">
-                    <div style="max-width: 500px; background: white; margin: auto; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <div style="max-width: 500px; background-color: #1f1f1f; margin: auto; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         <h2 style="color: #2a7b6f; margin-bottom: 10px;">¡Bienvenida/o a WhatsApp Clone! 💬</h2>
                         <p style="color: #ffffff;">Gracias por registrarte. Para activar tu cuenta, hacé clic en el botón de abajo:</p>
                         <a href='${ENVIRONMENT.BACKEND_URL}/api/auth/verify-email/${verification_token}'
