@@ -204,18 +204,19 @@ class AuthController {
         <style>
         body {
             font-family: Arial, sans-serif;
-            background: #00BFA6;
-            color: white;
+            background: #161616;
+            color: #eaeaea;
             text-align: center;
             padding: 50px;
         }
         .card {
-            background: white;
-            color: #333;
+            background: #1f1f1f;
+            color: #eaeaea;
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             display: inline-block;
             padding: 40px 60px;
+            border: 1px solid #333;
         }
         input {
             width: 80%;
@@ -223,10 +224,11 @@ class AuthController {
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 6px;
+            background: #242424;
         }
         button {
-            background: #00BFA6;
-            color: white;
+            background: #2a7b6f;
+            color: #eaeaea;
             border: none;
             border-radius: 8px;
             font-weight: bold;

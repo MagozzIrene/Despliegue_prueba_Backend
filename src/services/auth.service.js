@@ -91,7 +91,7 @@ class AuthService {
                 <h2 style="color: #2a7b6f;">Recuperación de contraseña 🔑</h2>
                 <p style="color: #eaeaea;">Hola ${user.name || "usuario"},</p>
                 <p style="color: #eaeaea;">Recibimos una solicitud para restablecer tu contraseña.</p>
-                <p>Podés hacerlo haciendo clic en el botón de abajo:</p>
+                <p style="color: #eaeaea;">Podés hacerlo haciendo clic en el botón de abajo:</p>
                 <a href="${resetLink}"
                     style="display:inline-block;background-color: #2a7b6f;color:white;padding:12px 20px;text-decoration:none;border-radius:6px;font-weight:bold;margin-top:20px;">
                     Restablecer contraseña
