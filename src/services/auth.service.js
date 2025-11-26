@@ -132,7 +132,7 @@ class AuthService {
                 name: user.name,
                 email: user.email,
 
-                avatar: user.avatar,  // Prueba
+                avatar: user.avatar,
                 
                 created_at: user.created_at,
             },

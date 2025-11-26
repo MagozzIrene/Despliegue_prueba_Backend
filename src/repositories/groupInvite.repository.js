@@ -28,12 +28,12 @@ class GroupInviteRepository {
             to: receiver_email,
             subject: "📩 Invitación a un grupo en WhatsApp Clone",
             html: `
-        <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
-            <div style="max-width: 500px; background: white; margin: auto; border-radius: 8px; padding: 20px; text-align: center;">
-                <h2 style="color: #128C7E;">Invitación a un grupo 💬</h2>
-                <p>Has sido invitado a unirte a un grupo en <strong>WhatsApp Clone</strong>.</p>
-                <a href="${acceptLink}" style="display:inline-block;background:#128C7E;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;">Aceptar</a>
-                <a href="${rejectLink}" style="display:inline-block;background:#d9534f;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;">Rechazar</a>
+        <div style="font-family: Arial, sans-serif; background-color: #161616; padding: 20px;">
+            <div style="max-width: 500px; background: #1f1f1f; margin: auto; border-radius: 8px; padding: 20px; text-align: center; border: 1px solid #333;">
+                <h2 style="color: #2a7b6f;">Invitación a un grupo 💬</h2>
+                <p style="color: #eaeaea;">Has sido invitado a unirte a un grupo en <strong>WhatsApp Clone</strong>.</p>
+                <a href="${acceptLink}" style="display:inline-block;background: #128C7E;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;">Aceptar</a>
+                <a href="${rejectLink}" style="display:inline-block;background: #d9534f;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;">Rechazar</a>
             </div>
         </div>`,
         });
@@ -52,12 +52,12 @@ class GroupInviteRepository {
         if (!existingUser) {
             return `
         <html>
-            <body style="font-family:sans-serif;text-align:center;padding:50px;background:#00BFA6;color:white;">
-                <div style="background:white;color:#333;padding:40px;border-radius:16px;display:inline-block;">
-                <h2>🔑 Crea tu cuenta para unirte al grupo</h2>
-                <p>Usá el mismo correo con el que recibiste esta invitación:</p>
+            <body style="font-family:sans-serif;text-align:center;padding:50px;background: #161616;color: #eaeaea;">
+                <div style="background: #1f1f1f;color: #eaeaea;;padding:40px;border-radius:16px;display:inline-block; 1px solid #333;">
+                <h2 style="color: #eaeaea;>🔑 Crea tu cuenta para unirte al grupo</h2>
+                <p style="color: #eaeaea;>Usá el mismo correo con el que recibiste esta invitación:</p>
                 <a href="${ENVIRONMENT.FRONTEND_URL}/register?invite=${token}"
-                    style="display:inline-block;background:#00BFA6;color:white;padding:12px 20px;border-radius:6px;text-decoration:none;">
+                    style="display:inline-block;background: #2a7b6f;color: #eaeaea;padding:12px 20px;border-radius:6px;text-decoration:none;">
                     Crear cuenta y unirme
                 </a>
                 </div>
@@ -81,12 +81,12 @@ class GroupInviteRepository {
 
         return `
         <html>
-            <body style="font-family:sans-serif;text-align:center;padding:50px;background:#00BFA6;color:white;">
-            <div style="background:white;color:#333;padding:40px;border-radius:16px;display:inline-block;">
+            <body style="font-family:sans-serif;text-align:center;padding:50px;background: #161616;color: #eaeaea;">
+            <div style="background: #1f1f1f;color: #eaeaea;padding:40px;border-radius:16px;display:inline-block; border: 1px solid #333;">
                 <h1>🎉 ¡Te uniste al grupo con éxito!</h1>
                 <p>Ahora formás parte del grupo al que fuiste invitado.</p>
                 <a href="${ENVIRONMENT.FRONTEND_URL || "#"}"
-                style="display:inline-block;margin-top:20px;padding:10px 20px;background:#00BFA6;color:white;text-decoration:none;border-radius:8px;">
+                style="display:inline-block;margin-top:20px;padding:10px 20px;background: #2a7b6f;color: #eaeaea;text-decoration:none;border-radius:8px;">
                 Ir al grupo
                 </a>
             </div>
@@ -103,7 +103,7 @@ class GroupInviteRepository {
 
         return `
     <html>
-        <body style="font-family:sans-serif;text-align:center;padding:50px;background:#d9534f;color:white;">
+        <body style="font-family:sans-serif;text-align:center;padding:50px;background: #d9534f;color:white;">
             <div style="background:white;color:#333;padding:40px;border-radius:16px;display:inline-block;">
             <h1>❌ Invitación rechazada</h1>
             <p>Has rechazado la invitación al grupo. No se realizará ninguna acción.</p>

@@ -27,8 +27,6 @@ class MessageRepository {
             .populate("receiver", "name email avatar");
     }
 
-    //Prueba
-
     static async markAsRead(message_id) {
         const updated = await Message.findByIdAndUpdate(
             message_id,

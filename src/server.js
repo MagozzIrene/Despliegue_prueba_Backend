@@ -38,11 +38,7 @@ app.use(
 );
 
 app.use(express.json());
-
-//Prueba
-
 app.use(express.urlencoded({ extended: true }));
-
 
 connectMongoDB();
 
